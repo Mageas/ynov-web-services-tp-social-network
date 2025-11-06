@@ -169,7 +169,7 @@
 								"exec": [
 									"const pageParam = pm.request.url.query.find((param) => param.key === 'page')",
 									"",
-									"if (pageParam === undefined || pageParam?.id === \"1\" || pageParam.disabled === true) {",
+									"if (pageParam === undefined || pageParam?.value === \"1\" || pageParam.disabled === true) {",
 									"    pm.collectionVariables.set('post-infinit-scroll-timestamp', '')",
 									"    pm.request.url.query.remove('beforeTs')",
 									"}"
@@ -185,7 +185,7 @@
 								"exec": [
 									"const pageParam = pm.request.url.query.find((param) => param.key === 'page')",
 									"",
-									"if (pageParam === undefined || pageParam?.id === \"1\" || pageParam.disabled === 'true') {",
+									"if (pageParam === undefined || pageParam?.value === \"1\" || pageParam.disabled === 'true') {",
 									"    pm.collectionVariables.set('post-infinit-scroll-timestamp', Math.floor(new Date().getTime() / 1000))",
 									"}",
 									"",
@@ -216,7 +216,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/posts?limit=2&beforeTs={{post-infinit-scroll-timestamp}}",
+							"raw": "{{url}}/posts?page=1&limit=2&beforeTs={{post-infinit-scroll-timestamp}}",
 							"host": [
 								"{{url}}"
 							],
@@ -226,8 +226,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "2",
-									"disabled": true
+									"value": "1"
 								},
 								{
 									"key": "limit",
@@ -260,8 +259,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Statut 204 No Content\", function () {",
-									"    pm.response.to.have.status(204);",
+									"pm.test(\"Statut 200\", function () {",
+									"    pm.response.to.have.status(200);",
 									"});",
 									"",
 									"pm.test(\"Réponse sans contenu\", function () {",
@@ -309,8 +308,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Statut 204 No Content\", function () {",
-									"    pm.response.to.have.status(204);",
+									"pm.test(\"Statut 200\", function () {",
+									"    pm.response.to.have.status(200);",
 									"});",
 									"",
 									"pm.test(\"Réponse sans contenu\", function () {",

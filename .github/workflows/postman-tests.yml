@@ -24,12 +24,17 @@ jobs:
       - name: Build
         run: go build ./...
 
-      - name: Start API server
-        env:
-          JWT_SECRET: test-secret-for-ci
+      - name: Create .env file
         run: |
-          nohup sh -c 'JWT_SECRET=$JWT_SECRET go run main.go' >/tmp/api.log 2>&1 &
+          echo "JWT_SECRET=test-secret-key-for-ci-cd-only-change-in-production" > .env
+          echo "PORT=8080" >> .env
+          echo "DB_PATH=data.db" >> .env
+
+      - name: Start API server
+        run: |
+          nohup sh -c 'go run cmd/api/main.go' >/tmp/api.log 2>&1 &
           echo $! > /tmp/api.pid
+          sleep 2
 
       - name: Install Newman
         run: |
@@ -59,4 +64,11 @@ jobs:
       - name: Stop API
         if: always()
         run: |
-          if [ -f /tmp/api.pid ]; then kill $(cat /tmp/api.pid) || true; fi
+          if [ -f /tmp/api.pid ]; then
+            PID=$(cat /tmp/api.pid)
+            if ps -p $PID > /dev/null 2>&1; then
+              kill -TERM $PID || true
+              sleep 2
+              kill -9 $PID 2>/dev/null || true
+            fi
+          fi
