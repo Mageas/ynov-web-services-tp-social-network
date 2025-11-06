@@ -11,6 +11,34 @@
 			"item": [
 				{
 					"name": "Signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const email = pm.variables.replaceIn('{{$randomEmail}}');",
+									"const password = pm.variables.replaceIn('{{$randomPassword}}');",
+									"",
+									"pm.collectionVariables.set('signup_email', email);",
+									"pm.collectionVariables.set('signup_password', password);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -19,7 +47,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test@test.fr\",\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"email\": \"{{signup_email}}\",\n    \"password\": \"{{signup_password}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -36,7 +64,155 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200 - Signup",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{signup_email}}\",\n    \"password\": \"{{signup_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/signup",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"signup"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 20:50:23 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "400 - Empty password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{signup_email}}\",\n    \"password\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/signup",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"signup"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 20:52:49 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"status\": 400,\n    \"message\": \"validation failed\",\n    \"validationErrors\": {\n        \"password\": \"this field is required\"\n    }\n}"
+						},
+						{
+							"name": "400 - Not a valid email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"not_an_email\",\n    \"password\": \"{{signup_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/signup",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"signup"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 20:55:19 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "106"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 400,\n    \"message\": \"validation failed\",\n    \"validationErrors\": {\n        \"email\": \"must be a valid email address\"\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "Login",
@@ -54,6 +230,17 @@
 								"packages": {},
 								"requests": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
 					],
 					"request": {
@@ -64,7 +251,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test@test.fr\",\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"email\": \"{{signup_email}}\",\n    \"password\": \"{{signup_password}}\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,7 +268,151 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200 - Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{signup_email}}\",\n    \"password\": \"{{signup_password}}\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 20:50:35 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "193"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imthcm9sYW5uLmt1bnplMTFAaG90bWFpbC5jb20iLCJleHAiOjE3NjI1NDg2MzUsImlhdCI6MTc2MjQ2MjIzNX0.hgZbWwWDN8fOklGmT10-B8sTbne575aEWrvmiwNqEMw\"\n}"
+						},
+						{
+							"name": "400 - Empty password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{signup_email}}\",\n    \"password\": \"\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 20:56:18 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 400,\n    \"message\": \"validation failed\",\n    \"validationErrors\": {\n        \"password\": \"this field is required\"\n    }\n}"
+						},
+						{
+							"name": "401 - Invalid credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"this.email.does.not.exists@test.fr\",\n    \"password\": \"{{signup_password}}\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 20:58:07 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "47"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"message\": \"invalid credentials\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -158,7 +489,148 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200 - Create Post",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"{{$randomLoremParagraph}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/posts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 20:50:40 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "286"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"id\": \"7bd9d09f52fc3e621cf5ecb6\",\n    \"author\": \"karolann.kunze11@hotmail.com\",\n    \"content\": \"Eos vitae et harum possimus aut ex cumque recusandae similique. Cumque perferendis consectetur qui. Temporibus illum doloribus consequatur sint reiciendis nobis.\",\n    \"createdAt\": 1762462240,\n    \"likesCount\": 0\n}"
+						},
+						{
+							"name": "400 - Invalid JSON",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/posts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 21:00:43 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "40"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 400,\n    \"message\": \"invalid JSON\"\n}"
+						},
+						{
+							"name": "400 - Content is required",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/posts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 21:01:03 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "101"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 400,\n    \"message\": \"validation failed\",\n    \"validationErrors\": {\n        \"content\": \"this field is required\"\n    }\n}"
+						}
+					]
 				},
 				{
 					"name": "List Posts",
@@ -216,7 +688,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/posts?page=1&limit=2&beforeTs={{post-infinit-scroll-timestamp}}",
+							"raw": "{{url}}/posts?limit=2&beforeTs={{post-infinit-scroll-timestamp}}",
 							"host": [
 								"{{url}}"
 							],
@@ -226,7 +698,8 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "1"
+									"value": "2",
+									"disabled": true
 								},
 								{
 									"key": "limit",
@@ -239,7 +712,66 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200 - List Posts",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/posts?limit=2&beforeTs={{post-infinit-scroll-timestamp}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										},
+										{
+											"key": "beforeTs",
+											"value": "{{post-infinit-scroll-timestamp}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 20:50:47 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "726"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "[\n    {\n        \"id\": \"7bd9d09f52fc3e621cf5ecb6\",\n        \"author\": \"karolann.kunze11@hotmail.com\",\n        \"content\": \"Eos vitae et harum possimus aut ex cumque recusandae similique. Cumque perferendis consectetur qui. Temporibus illum doloribus consequatur sint reiciendis nobis.\",\n        \"createdAt\": 1762462240,\n        \"likesCount\": 0\n    },\n    {\n        \"id\": \"a57666f1f4ccd3232a63ba58\",\n        \"author\": \"hadley45@yahoo.com\",\n        \"content\": \"Consequatur consequatur earum praesentium ullam numquam. Rerum consectetur voluptatem fugiat rerum assumenda quos eius aliquam quasi. Non consequatur omnis odit est quidem et beatae. Et voluptas quia qui qui laudantium recusandae ea. Fugit minima qui enim ut commodi saepe. Ab magnam fugiat doloribus minus rerum est rerum.\",\n        \"createdAt\": 1762462002,\n        \"likesCount\": 1\n    }\n]"
+						}
+					]
 				},
 				{
 					"name": "Like Post",
@@ -288,7 +820,53 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200 - Like Post",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/posts/{{created-post-id}}/like",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts",
+										"{{created-post-id}}",
+										"like"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 20:50:59 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "17"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"likesCount\": 1\n}"
+						}
+					]
 				},
 				{
 					"name": "Unlike Post",
@@ -337,7 +915,53 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200 - Unlike Post",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/posts/{{created-post-id}}/unlike",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts",
+										"{{created-post-id}}",
+										"unlike"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Nov 2025 20:51:21 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "17"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"likesCount\": 0\n}"
+						}
+					]
 				}
 			]
 		}
@@ -387,6 +1011,14 @@
 		},
 		{
 			"key": "post-infinit-scroll-timestamp",
+			"value": ""
+		},
+		{
+			"key": "signup_email",
+			"value": ""
+		},
+		{
+			"key": "signup_password",
 			"value": ""
 		}
 	]
