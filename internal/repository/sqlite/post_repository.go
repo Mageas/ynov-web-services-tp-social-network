@@ -25,7 +25,7 @@ func NewPostRepository(db *gorm.DB) *PostRepository {
 func (r *PostRepository) Create(ctx context.Context, p *post.Post) error {
 	model := &postModel{
 		ID:        p.ID,
-		Author:    p.Author,
+		UserEmail: p.Author, // Author is the user email
 		Content:   p.Content,
 		CreatedAt: p.CreatedAt.Unix(),
 	}
@@ -58,7 +58,7 @@ func (r *PostRepository) GetByID(ctx context.Context, id string) (*post.Post, er
 
 	return &post.Post{
 		ID:         model.ID,
-		Author:     model.Author,
+		Author:     model.UserEmail, // UserEmail is the author email
 		Content:    model.Content,
 		CreatedAt:  time.Unix(model.CreatedAt, 0),
 		LikesCount: int(likesCount),
@@ -78,7 +78,7 @@ func (r *PostRepository) ListBefore(ctx context.Context, beforeTimestamp int64, 
 
 	var results []struct {
 		ID         string
-		Author     string
+		UserEmail  string
 		Content    string
 		CreatedAt  int64
 		LikesCount int64
@@ -86,7 +86,7 @@ func (r *PostRepository) ListBefore(ctx context.Context, beforeTimestamp int64, 
 
 	query := r.db.WithContext(ctx).
 		Table("posts").
-		Select("posts.id, posts.author, posts.content, posts.created_at, COUNT(liked_posts.post_id) AS likes_count").
+		Select("posts.id, posts.user_email, posts.content, posts.created_at, COUNT(liked_posts.post_id) AS likes_count").
 		Joins("LEFT JOIN liked_posts ON liked_posts.post_id = posts.id").
 		Group("posts.id").
 		Order("posts.created_at DESC, posts.id DESC")
@@ -104,7 +104,7 @@ func (r *PostRepository) ListBefore(ctx context.Context, beforeTimestamp int64, 
 	for _, r := range results {
 		posts = append(posts, &post.Post{
 			ID:         r.ID,
-			Author:     r.Author,
+			Author:     r.UserEmail, // UserEmail is the author email
 			Content:    r.Content,
 			CreatedAt:  time.Unix(r.CreatedAt, 0),
 			LikesCount: int(r.LikesCount),
