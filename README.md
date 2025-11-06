@@ -20,9 +20,9 @@ Ce projet suit une **architecture en couches** (layered architecture) inspirée 
 │   │   │   ├── auth.go       # Endpoints d'authentification
 │   │   │   └── post.go       # Endpoints des posts
 │   │   ├── middleware/       # Middlewares HTTP
-│   │   │   ├── auth.go       # Middleware d'authentification JWT
-│   │   │   ├── error.go      # Middleware de gestion d'erreurs
-│   │   │   └── utils.go      # Utilitaires middleware
+│   │   │   └── auth.go       # Middleware d'authentification JWT
+│   │   ├── response/         # Helpers de réponse HTTP
+│   │   │   └── response.go   # Fonctions pour réponses JSON/erreurs
 │   │   └── router/           # Configuration des routes
 │   │       └── router.go
 │   ├── config/               # Configuration de l'application
@@ -83,7 +83,8 @@ Ce projet suit une **architecture en couches** (layered architecture) inspirée 
 4. **API Layer** (`internal/api/`)
    - Gère les requêtes/réponses HTTP
    - Transforme les données (DTOs)
-   - Applique les middlewares (auth, logging, erreurs)
+   - Applique les middlewares (auth)
+   - Gestion centralisée des réponses JSON via le package `response`
 
 5. **Infrastructure** (`internal/pkg/`, `internal/config/`)
    - Packages réutilisables (logger, validator, errors)
@@ -201,7 +202,7 @@ Centralisation de la logique métier, séparée de la couche HTTP.
 Séparation entre les modèles de domaine et les structures API.
 
 ### Middleware Pattern
-Traitement en chaîne des requêtes HTTP (auth, logging, erreurs).
+Traitement en chaîne des requêtes HTTP (authentification JWT).
 
 ## 🧪 Tests
 
