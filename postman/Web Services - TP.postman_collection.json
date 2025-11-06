@@ -1,0 +1,394 @@
+{
+	"info": {
+		"_postman_id": "6b125a32-d877-4c8a-9081-abfb07d0383f",
+		"name": "Web Services - TP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31553491"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@test.fr\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.environment.set('token', response.token);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@test.fr\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Create Post",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.replaceIn('{{$randomLoremParagraph}}')"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.collectionVariables.set('created-post-id', response.id)",
+									"",
+									"pm.test(\"Statut 201 créé\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Réponse est en JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"L'objet post contient un id\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data).to.have.property(\"id\");",
+									"});",
+									"",
+									"pm.test(\"Contenu du post n'est pas vide\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data).to.have.property(\"content\").that.is.a(\"string\").and.is.not.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"{{$randomLoremParagraph}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/posts",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Posts",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const pageParam = pm.request.url.query.find((param) => param.key === 'page')",
+									"",
+									"if (pageParam === undefined || pageParam?.id === \"1\" || pageParam.disabled === true) {",
+									"    pm.collectionVariables.set('post-infinit-scroll-timestamp', '')",
+									"    pm.request.url.query.remove('beforeTs')",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const pageParam = pm.request.url.query.find((param) => param.key === 'page')",
+									"",
+									"if (pageParam === undefined || pageParam?.id === \"1\" || pageParam.disabled === 'true') {",
+									"    pm.collectionVariables.set('post-infinit-scroll-timestamp', Math.floor(new Date().getTime() / 1000))",
+									"}",
+									"",
+									"pm.test(\"Statut 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"La réponse est un tableau de posts\", function () {",
+									"    const posts = pm.response.json();",
+									"    pm.expect(posts).to.be.an(\"array\");",
+									"    if (posts.length > 0) {",
+									"        pm.expect(posts[0]).to.have.property(\"id\");",
+									"        pm.expect(posts[0]).to.have.property(\"author\");",
+									"        pm.expect(posts[0]).to.have.property(\"content\");",
+									"        pm.expect(posts[0]).to.have.property(\"createdAt\");",
+									"        pm.expect(posts[0]).to.have.property(\"likesCount\");",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/posts?limit=2&beforeTs={{post-infinit-scroll-timestamp}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "beforeTs",
+									"value": "{{post-infinit-scroll-timestamp}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like Post",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut 204 No Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"pm.test(\"Réponse sans contenu\", function () {",
+									"    pm.response.to.not.have.body;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/posts/{{created-post-id}}/like",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts",
+								"{{created-post-id}}",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unlike Post",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut 204 No Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"pm.test(\"Réponse sans contenu\", function () {",
+									"    pm.response.to.not.have.body;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/posts/{{created-post-id}}/unlike",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts",
+								"{{created-post-id}}",
+								"unlike"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "script-created-post-id",
+			"value": ""
+		},
+		{
+			"key": "created-post-id",
+			"value": ""
+		},
+		{
+			"key": "post-infinit-scroll-timestamp",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,62 @@
+name: API Postman Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22.x"
+
+      - name: Download Go dependencies
+        run: go mod download
+
+      - name: Build
+        run: go build ./...
+
+      - name: Start API server
+        env:
+          JWT_SECRET: test-secret-for-ci
+        run: |
+          nohup sh -c 'JWT_SECRET=$JWT_SECRET go run main.go' >/tmp/api.log 2>&1 &
+          echo $! > /tmp/api.pid
+
+      - name: Install Newman
+        run: |
+          npm i -g newman newman-reporter-junitfull
+
+      - name: Run Postman collection with Newman
+        run: |
+          newman run "postman/Web Services - TP.postman_collection.json" \
+            -e "postman/Web Services - TP.postman_environment.json" \
+            --env-var url=http://localhost:8080 \
+            --reporters cli,junitfull \
+            --reporter-junitfull-export newman-report.xml
+
+      - name: Upload Newman report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report
+          path: newman-report.xml
+
+      - name: Print API logs on failure
+        if: failure()
+        run: |
+          echo "--- API LOGS ---"
+          tail -n 200 /tmp/api.log
+
+      - name: Stop API
+        if: always()
+        run: |
+          if [ -f /tmp/api.pid ]; then kill $(cat /tmp/api.pid) || true; fi
