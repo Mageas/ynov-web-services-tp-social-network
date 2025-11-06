@@ -49,12 +49,14 @@ func (s *Service) Register(ctx context.Context, email, password string) error {
 		return apperrors.ErrUserAlreadyExists
 	}
 
-	// Hash password
-	salt := s.passwordService.GenerateSalt(email)
-	passwordHash := s.passwordService.HashPassword(password, salt)
+	// Hash password (bcrypt automatically generates and embeds salt)
+	passwordHash, err := s.passwordService.HashPassword(password)
+	if err != nil {
+		return apperrors.Wrap(err, 500, "failed to hash password")
+	}
 
 	// Create user
-	u := user.NewUser(email, passwordHash, salt)
+	u := user.NewUser(email, passwordHash)
 	return s.repo.Create(ctx, u)
 }
 
@@ -78,8 +80,8 @@ func (s *Service) Authenticate(ctx context.Context, email, password string) (str
 		return "", apperrors.ErrInvalidCredentials
 	}
 
-	// Verify password
-	if !s.passwordService.VerifyPassword(password, u.Salt, u.PasswordHash) {
+	// Verify password (bcrypt hash contains the salt)
+	if !s.passwordService.VerifyPassword(password, u.PasswordHash) {
 		return "", apperrors.ErrInvalidCredentials
 	}
 

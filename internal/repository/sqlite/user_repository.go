@@ -26,7 +26,6 @@ func (r *UserRepository) Create(ctx context.Context, u *user.User) error {
 	model := &userModel{
 		Email:        strings.ToLower(u.Email),
 		PasswordHash: u.PasswordHash,
-		Salt:         u.Salt,
 	}
 
 	if err := r.db.WithContext(ctx).Create(model).Error; err != nil {
@@ -56,7 +55,6 @@ func (r *UserRepository) GetByEmail(ctx context.Context, email string) (*user.Us
 	return &user.User{
 		Email:        model.Email,
 		PasswordHash: model.PasswordHash,
-		Salt:         model.Salt,
 	}, nil
 }
 

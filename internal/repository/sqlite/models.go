@@ -3,8 +3,7 @@ package sqlite
 // userModel represents the database model for users
 type userModel struct {
 	Email        string `gorm:"primaryKey"`
-	PasswordHash string
-	Salt         string
+	PasswordHash string // bcrypt hash (salt is embedded in the hash)
 }
 
 // TableName overrides the table name
