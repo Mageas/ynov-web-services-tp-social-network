@@ -1,0 +1,28 @@
+/*
+Generate a JSON file with random articles and comments on https://json-generator.com
+*/
+
+{
+  "articles": [
+    "{{repeat(20, 30)}}",
+    {
+      "id": "{{index()+1}}",
+      "title": "{{lorem(1, 'sentences')}}",
+      "image": "https://picsum.photos/800/600?random={{index()}}",
+      "content": "{{lorem(2, 'paragraphs')}}",
+      "date": "{{date(new Date(2024, 0, 1), new Date(), 'YYYY-MM-dd')}}",
+      "tag": "{{random('technologie', 'sport', 'politique', 'culture', 'science', 'économie')}}",
+      "likes": "{{integer(0, 500)}}"
+    }
+  ],
+  "comments": [
+    "{{repeat(40, 60)}}",
+    {
+      "id": "{{index()+1}}",
+      "articleId": "{{integer(1, 30)}}",
+      "author": "{{firstName()}} {{surname()}}",
+      "content": "{{lorem(1, 'paragraphs')}}",
+      "date": "{{date(new Date(2024, 6, 1), new Date(), 'YYYY-MM-dd HH:mm:ss')}}"
+    }
+  ]
+}

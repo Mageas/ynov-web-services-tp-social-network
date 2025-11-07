@@ -1,4 +1,4 @@
-.PHONY: help run build test clean lint fmt
+.PHONY: run build test clean lint fmt json-server
 
 # Variables
 BINARY_NAME=api
@@ -47,5 +47,8 @@ deps: ## Installer les dépendances
 	@go mod download
 	@go mod tidy
 
-.DEFAULT_GOAL := run
+json-server: ## Lancer json-server
+	@echo "Lancement de json-server..."
+	@json-server --watch json-server/db.json --port 3000
 
+.DEFAULT_GOAL := run
