@@ -1,0 +1,384 @@
+openapi: 3.0.0
+info:
+  title: Web Services - TP - Json Server
+  version: 1.0.0
+  description: ""
+servers:
+  - url: "http://localhost:8082/json-server"
+paths:
+  /articles:
+    get:
+      summary: Liste tous les articles
+      tags:
+        - Articles
+      responses:
+        "200":
+          description: 200 - Liste tous les articles
+          headers:
+            X-Gravitee-Client-Identifier:
+              schema:
+                type: integer
+            X-Powered-By:
+              schema:
+                type: string
+            Vary:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+            Cache-Control:
+              schema:
+                type: string
+            Pragma:
+              schema:
+                type: string
+            Expires:
+              schema:
+                type: integer
+            X-Content-Type-Options:
+              schema:
+                type: string
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+            X-Gravitee-Transaction-Id:
+              schema:
+                type: integer
+            X-Gravitee-Request-Id:
+              schema:
+                type: integer
+            transfer-encoding:
+              schema:
+                type: string
+  /articles/1:
+    get:
+      summary: Recherche article par ID
+      tags:
+        - Articles
+      responses:
+        "200":
+          description: 200 - Recherche article par ID
+          headers:
+            X-Gravitee-Client-Identifier:
+              schema:
+                type: integer
+            X-Powered-By:
+              schema:
+                type: string
+            Vary:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+            Cache-Control:
+              schema:
+                type: string
+            Pragma:
+              schema:
+                type: string
+            Expires:
+              schema:
+                type: integer
+            X-Content-Type-Options:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: integer
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+            X-Gravitee-Transaction-Id:
+              schema:
+                type: integer
+            X-Gravitee-Request-Id:
+              schema:
+                type: integer
+  /comments:
+    get:
+      summary: Tous les commentaires
+      tags:
+        - Commentaires
+      responses:
+        "200":
+          description: 200 - Tous les commentaires
+          headers:
+            X-Gravitee-Client-Identifier:
+              schema:
+                type: integer
+            X-Powered-By:
+              schema:
+                type: string
+            Vary:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+            Cache-Control:
+              schema:
+                type: string
+            Pragma:
+              schema:
+                type: string
+            Expires:
+              schema:
+                type: integer
+            X-Content-Type-Options:
+              schema:
+                type: string
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+            X-Gravitee-Transaction-Id:
+              schema:
+                type: string
+            X-Gravitee-Request-Id:
+              schema:
+                type: string
+            transfer-encoding:
+              schema:
+                type: string
+    post:
+      summary: Ajouter un commentaire
+      tags:
+        - Commentaires
+      responses:
+        "201":
+          description: 200 - Ajouter un commentaire
+          headers:
+            X-Gravitee-Client-Identifier:
+              schema:
+                type: integer
+            X-Powered-By:
+              schema:
+                type: string
+            Vary:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+            Cache-Control:
+              schema:
+                type: string
+            Pragma:
+              schema:
+                type: string
+            Expires:
+              schema:
+                type: integer
+            Access-Control-Expose-Headers:
+              schema:
+                type: string
+            Location:
+              schema:
+                type: string
+            X-Content-Type-Options:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: integer
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+            X-Gravitee-Transaction-Id:
+              schema:
+                type: integer
+            X-Gravitee-Request-Id:
+              schema:
+                type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+  /comments/{created-comment-id}:
+    put:
+      summary: Modifier un commentaire
+      tags:
+        - Commentaires
+      responses:
+        "200":
+          description: 200 - Modifier un commentaire
+          headers:
+            X-Gravitee-Client-Identifier:
+              schema:
+                type: integer
+            X-Powered-By:
+              schema:
+                type: string
+            Vary:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+            Cache-Control:
+              schema:
+                type: string
+            Pragma:
+              schema:
+                type: string
+            Expires:
+              schema:
+                type: integer
+            X-Content-Type-Options:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: integer
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+            X-Gravitee-Transaction-Id:
+              schema:
+                type: string
+            X-Gravitee-Request-Id:
+              schema:
+                type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+    parameters:
+      - name: created-comment-id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Recherche commentaire par ID
+      tags:
+        - Commentaires
+      responses:
+        "200":
+          description: 200 - Recherche commentaire par ID
+          headers:
+            X-Gravitee-Client-Identifier:
+              schema:
+                type: integer
+            X-Powered-By:
+              schema:
+                type: string
+            Vary:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+            Cache-Control:
+              schema:
+                type: string
+            Pragma:
+              schema:
+                type: string
+            Expires:
+              schema:
+                type: integer
+            X-Content-Type-Options:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: integer
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+            X-Gravitee-Transaction-Id:
+              schema:
+                type: integer
+            X-Gravitee-Request-Id:
+              schema:
+                type: integer
+    delete:
+      summary: Supprimer un commentaire
+      tags:
+        - Commentaires
+      responses:
+        "200":
+          description: 200 - Supprimer un commentaire
+          headers:
+            X-Gravitee-Client-Identifier:
+              schema:
+                type: integer
+            X-Powered-By:
+              schema:
+                type: string
+            Vary:
+              schema:
+                type: string
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+            Cache-Control:
+              schema:
+                type: string
+            Pragma:
+              schema:
+                type: string
+            Expires:
+              schema:
+                type: integer
+            X-Content-Type-Options:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: integer
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+            X-Gravitee-Transaction-Id:
+              schema:
+                type: string
+            X-Gravitee-Request-Id:
+              schema:
+                type: string
