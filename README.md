@@ -21,6 +21,21 @@ Ce projet utilise **Gravitee API Management** comme passerelle API. Les routes s
 > - API Go : `http://localhost:8080`
 > - JSON Server : `http://localhost:3000`
 
+### ⚙️ Configuration CORS pour les tests OpenAPI
+
+Pour pouvoir tester les APIs depuis l'interface web OpenAPI (Portal UI ou via Swagger UI), il est **essentiel de configurer les CORS** dans Gravitee :
+
+1. Accédez au **Management UI** : `http://localhost:8084/`
+2. Sélectionnez votre API (Go API ou JSON Server)
+3. Allez dans **Policies** → **Request** → **CORS**
+4. Configurez les CORS avec les paramètres suivants :
+   - **Access-Control-Allow-Origin** : `*`
+   - **Access-Control-Allow-Methods** : `*`
+   - **Access-Control-Allow-Headers** : `*`
+   - **Access-Control-Allow-Credentials** : `true` (si nécessaire)
+
+Sans cette configuration, les requêtes depuis l'interface web OpenAPI seront bloquées par les restrictions CORS du navigateur.
+
 ## 🏗️ Architecture
 
 Ce projet suit une **architecture en couches** (layered architecture) inspirée de l'architecture hexagonale et des principes DDD (Domain-Driven Design).
