@@ -1,0 +1,83 @@
+networks:
+  frontend:
+    name: frontend
+  storage:
+    name: storage
+
+volumes:
+  data-elasticsearch:
+  data-mongo:
+
+services:
+  # Reuse Gravitee APIM stack from docker-compose-apim.yml
+  mongodb:
+    extends:
+      file: docker-compose-apim.yml
+      service: mongodb
+
+  elasticsearch:
+    extends:
+      file: docker-compose-apim.yml
+      service: elasticsearch
+
+  gateway:
+    extends:
+      file: docker-compose-apim.yml
+      service: gateway
+    networks:
+      - storage
+      - frontend
+
+  management_api:
+    extends:
+      file: docker-compose-apim.yml
+      service: management_api
+    networks:
+      - storage
+      - frontend
+
+  management_ui:
+    extends:
+      file: docker-compose-apim.yml
+      service: management_ui
+    networks:
+      - frontend
+
+  portal_ui:
+    extends:
+      file: docker-compose-apim.yml
+      service: portal_ui
+    networks:
+      - frontend
+
+  # Go API service (builds from local Dockerfile)
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ynov_social_api
+    environment:
+      - PORT=8080
+      - DB_PATH=/data/data.db
+      - JWT_SECRET=${JWT_SECRET:-changeme-dev-secret}
+    volumes:
+      - ./data.db:/data/data.db
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+      - elasticsearch
+    networks:
+      - frontend
+
+  # JSON Server for db.json
+  json_server:
+    image: clue/json-server:latest
+    container_name: json_server
+    command: ["/data/db.json", "--host", "0.0.0.0", "--watch"]
+    volumes:
+      - ./json-server/db.json:/data/db.json
+    ports:
+      - "3000:80"
+    networks:
+      - frontend

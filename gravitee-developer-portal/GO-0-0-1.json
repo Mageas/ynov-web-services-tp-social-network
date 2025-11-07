@@ -1,0 +1,126 @@
+{
+  "name" : "GO",
+  "crossId" : "95cc9b4d-e53f-4781-8c9b-4de53f178104",
+  "version" : "0.0.1",
+  "execution_mode" : "v4-emulation-engine",
+  "description" : "GO API",
+  "visibility" : "PRIVATE",
+  "flows" : [ ],
+  "gravitee" : "2.0.0",
+  "flow_mode" : "DEFAULT",
+  "resources" : [ ],
+  "properties" : [ ],
+  "members" : [ {
+    "source" : "memory",
+    "sourceId" : "admin",
+    "roles" : [ "d201be79-2cbf-46da-81be-792cbf66da87" ]
+  } ],
+  "pages" : [ {
+    "id" : "e342c784-1967-4f4d-82c7-8419671f4d03",
+    "crossId" : "dc691c4f-07bd-4675-a91c-4f07bdd67565",
+    "name" : "Aside",
+    "type" : "SYSTEM_FOLDER",
+    "order" : 0,
+    "published" : true,
+    "visibility" : "PUBLIC",
+    "lastModificationDate" : 1762511379098,
+    "contentType" : "application/json",
+    "homepage" : false,
+    "parentPath" : "",
+    "excludedAccessControls" : false,
+    "accessControls" : [ ],
+    "api" : "b6875e10-d70b-4aa7-875e-10d70b7aa7f3",
+    "attached_media" : [ ]
+  } ],
+  "plans" : [ {
+    "id" : "0fa2367c-0293-4d72-a236-7c0293ed72ec",
+    "definitionVersion" : "2.0.0",
+    "crossId" : "1137442c-ba92-45c0-b744-2cba92f5c0e8",
+    "name" : "Go service",
+    "description" : "Go service",
+    "validation" : "AUTO",
+    "security" : "KEY_LESS",
+    "type" : "API",
+    "status" : "PUBLISHED",
+    "api" : "b6875e10-d70b-4aa7-875e-10d70b7aa7f3",
+    "order" : 0,
+    "characteristics" : [ ],
+    "tags" : [ ],
+    "created_at" : 1762508330798,
+    "updated_at" : 1762511379089,
+    "published_at" : 1762508330799,
+    "paths" : { },
+    "comment_required" : false,
+    "flows" : [ {
+      "id" : "024bd158-73a8-4e58-8bd1-5873a89e58c8",
+      "path-operator" : {
+        "path" : "/",
+        "operator" : "STARTS_WITH"
+      },
+      "condition" : "",
+      "consumers" : [ ],
+      "methods" : [ ],
+      "pre" : [ ],
+      "post" : [ ],
+      "enabled" : true
+    } ]
+  } ],
+  "metadata" : [ {
+    "key" : "email-support",
+    "name" : "email-support",
+    "format" : "MAIL",
+    "value" : "${(api.primaryOwner.email)!''}",
+    "defaultValue" : "support@change.me",
+    "apiId" : "b6875e10-d70b-4aa7-875e-10d70b7aa7f3"
+  } ],
+  "id" : "b6875e10-d70b-4aa7-875e-10d70b7aa7f3",
+  "path_mappings" : [ ],
+  "proxy" : {
+    "virtual_hosts" : [ {
+      "path" : "/go-api"
+    } ],
+    "strip_context_path" : false,
+    "preserve_host" : false,
+    "groups" : [ {
+      "name" : "default-group",
+      "endpoints" : [ {
+        "name" : "default",
+        "target" : "http://api:8080/",
+        "weight" : 1,
+        "backup" : false,
+        "tenants" : [ ],
+        "type" : "http",
+        "inherit" : true,
+        "headers" : [ ],
+        "healthcheck" : {
+          "steps" : [ ],
+          "enabled" : true,
+          "inherit" : true
+        }
+      } ],
+      "load_balancing" : {
+        "type" : "ROUND_ROBIN"
+      },
+      "http" : {
+        "connectTimeout" : 5000,
+        "idleTimeout" : 60000,
+        "keepAliveTimeout" : 30000,
+        "keepAlive" : true,
+        "readTimeout" : 10000,
+        "pipelining" : false,
+        "maxConcurrentConnections" : 100,
+        "useCompression" : true,
+        "followRedirects" : false,
+        "maxHeaderSize" : 8192,
+        "maxChunkSize" : 8192
+      }
+    } ]
+  },
+  "response_templates" : { },
+  "primaryOwner" : {
+    "id" : "eae6f2a7-1f5e-44b0-a6f2-a71f5e64b0b8",
+    "displayName" : "admin",
+    "type" : "USER"
+  },
+  "disable_membership_notifications" : false
+}

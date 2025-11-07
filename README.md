@@ -2,6 +2,25 @@
 
 Une API REST moderne pour un réseau social, construite selon les meilleures pratiques Go avec une architecture clean et une séparation claire des responsabilités.
 
+## 🌐 Accès via Gravitee API Gateway
+
+Ce projet utilise **Gravitee API Management** comme passerelle API. Les routes sont accessibles via le port **8082** :
+
+- **API Go (Social Network)** : `http://localhost:8082/go-api`
+  - Exemple : `http://localhost:8082/go-api/signup`, `http://localhost:8082/go-api/login`, `http://localhost:8082/go-api/posts`
+
+- **JSON Server** : `http://localhost:8082/json-server`
+  - Exemple : `http://localhost:8082/json-server/articles`, `http://localhost:8082/json-server/comments`
+
+### Dashboards de Configuration Gravitee
+
+- **Management UI** : `http://localhost:8084/` - Interface d'administration pour configurer les APIs, les politiques, les plans, etc.
+- **Portal UI** : `http://localhost:8085/` - Portail développeur pour consulter et tester les APIs
+
+> **Note** : L'accès direct aux services est également possible :
+> - API Go : `http://localhost:8080`
+> - JSON Server : `http://localhost:3000`
+
 ## 🏗️ Architecture
 
 Ce projet suit une **architecture en couches** (layered architecture) inspirée de l'architecture hexagonale et des principes DDD (Domain-Driven Design).

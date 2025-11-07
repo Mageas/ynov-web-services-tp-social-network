@@ -1,0 +1,125 @@
+{
+  "name" : "json-server",
+  "crossId" : "f09d35eb-8c9f-4559-9d35-eb8c9f2559bd",
+  "version" : "0.0.1",
+  "execution_mode" : "v4-emulation-engine",
+  "description" : "json-server",
+  "visibility" : "PRIVATE",
+  "flows" : [ ],
+  "gravitee" : "2.0.0",
+  "flow_mode" : "DEFAULT",
+  "resources" : [ ],
+  "properties" : [ ],
+  "members" : [ {
+    "source" : "memory",
+    "sourceId" : "admin",
+    "roles" : [ "d201be79-2cbf-46da-81be-792cbf66da87" ]
+  } ],
+  "pages" : [ {
+    "id" : "7fe3ccae-539b-4fd9-a3cc-ae539b5fd988",
+    "crossId" : "1df80e07-08aa-4b9a-b80e-0708aabb9a53",
+    "name" : "Aside",
+    "type" : "SYSTEM_FOLDER",
+    "order" : 0,
+    "published" : true,
+    "visibility" : "PUBLIC",
+    "lastModificationDate" : 1762511429607,
+    "contentType" : "application/json",
+    "homepage" : false,
+    "parentPath" : "",
+    "excludedAccessControls" : false,
+    "accessControls" : [ ],
+    "api" : "8917a8d4-b065-45be-97a8-d4b06575beac",
+    "attached_media" : [ ]
+  } ],
+  "plans" : [ {
+    "id" : "a92d624c-e260-4613-ad62-4ce260161384",
+    "definitionVersion" : "2.0.0",
+    "crossId" : "dbe943b4-e246-43ed-a943-b4e24623ed90",
+    "name" : "json-server",
+    "description" : "json-server",
+    "validation" : "AUTO",
+    "security" : "KEY_LESS",
+    "type" : "API",
+    "status" : "PUBLISHED",
+    "api" : "8917a8d4-b065-45be-97a8-d4b06575beac",
+    "order" : 0,
+    "characteristics" : [ ],
+    "tags" : [ ],
+    "created_at" : 1762510680361,
+    "updated_at" : 1762511429589,
+    "published_at" : 1762510680361,
+    "paths" : { },
+    "comment_required" : false,
+    "flows" : [ {
+      "id" : "d1df54c6-2511-4382-9f54-c625116382c0",
+      "path-operator" : {
+        "path" : "/",
+        "operator" : "STARTS_WITH"
+      },
+      "condition" : "",
+      "consumers" : [ ],
+      "methods" : [ ],
+      "pre" : [ ],
+      "post" : [ ],
+      "enabled" : true
+    } ]
+  } ],
+  "metadata" : [ {
+    "key" : "email-support",
+    "name" : "email-support",
+    "format" : "MAIL",
+    "value" : "${(api.primaryOwner.email)!''}",
+    "defaultValue" : "support@change.me",
+    "apiId" : "8917a8d4-b065-45be-97a8-d4b06575beac"
+  } ],
+  "id" : "8917a8d4-b065-45be-97a8-d4b06575beac",
+  "path_mappings" : [ ],
+  "proxy" : {
+    "virtual_hosts" : [ {
+      "path" : "/json-server/"
+    } ],
+    "strip_context_path" : false,
+    "preserve_host" : false,
+    "groups" : [ {
+      "name" : "default-group",
+      "endpoints" : [ {
+        "name" : "default",
+        "target" : "http://json_server",
+        "weight" : 1,
+        "backup" : false,
+        "tenants" : [ ],
+        "type" : "http",
+        "inherit" : true,
+        "headers" : [ ],
+        "healthcheck" : {
+          "steps" : [ ],
+          "inherit" : true
+        }
+      } ],
+      "load_balancing" : {
+        "type" : "ROUND_ROBIN"
+      },
+      "http" : {
+        "connectTimeout" : 5000,
+        "idleTimeout" : 60000,
+        "keepAliveTimeout" : 30000,
+        "keepAlive" : true,
+        "readTimeout" : 10000,
+        "pipelining" : false,
+        "maxConcurrentConnections" : 100,
+        "useCompression" : true,
+        "followRedirects" : false,
+        "maxHeaderSize" : 8192,
+        "maxChunkSize" : 8192
+      }
+    } ]
+  },
+  "response_templates" : { },
+  "primaryOwner" : {
+    "id" : "eae6f2a7-1f5e-44b0-a6f2-a71f5e64b0b8",
+    "displayName" : "admin",
+    "type" : "USER"
+  },
+  "disable_membership_notifications" : false
+}
